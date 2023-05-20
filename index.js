@@ -288,11 +288,39 @@ app.post('/editKaskeluar', function(req, res) {
   var jumlah = req.body.jumlah;
 
   // Lakukan proses update data transaksi di database
-  var sql = "UPDATE tbl_transaksi SET tgl = ?, no_akun = ?, tujuan = ?, jumlah = ?, kas_masuk = ? WHERE no_bukti = ?";
+  var sql = "UPDATE tbl_transaksi SET tgl = ?, no_akun = ?, tujuan = ?, jumlah = ?, kas_keluar = ? WHERE no_bukti = ?";
   conn.query(sql, [tgl, no_akun, tujuan, jumlah, jumlah, no_bukti], function(err, result) {
     if (err) throw err;
     console.log("Data transaksi berhasil diubah");
-    res.redirect('/kas-keluar');
+
+     // Mengambil saldo saat ini dari transaksi 
+     let getSaldoQuery = "SELECT saldo FROM tbl_transaksi ORDER BY id_trans DESC LIMIT 1";
+     conn.query(getSaldoQuery, (err, result) => {
+      if (err) {
+          console.error('Error saat mengambil saldo:', err);
+          throw err;
+      }
+
+      let saldo = 0;
+      if (result.length > 0) {
+          saldo = result[0].saldo; // Nilai saldo saat ini
+      }
+
+      let jumlahKasKeluar = parseInt(req.body.jumlah);
+
+      // Memperbarui saldo dengan menambahkan jumlah kas masuk
+      let updatedSaldo = saldo - jumlahKasKeluar;
+
+      // Menyimpan data transaksi kas masuk dan memperbarui saldo
+      let updateAndInsertQuery = "INSERT INTO tbl_transaksi SET ?, saldo = ?";
+      conn.query(updateAndInsertQuery, [data, updatedSaldo], (err, result) => {
+          if (err) {
+              console.error('Error saat menyimpan data:', err);
+              throw err;
+          }
+          res.redirect('/kas-keluar');
+      });
+    });
   });
 });
 
@@ -309,7 +337,6 @@ app.post('/deleteKaskeluar', (req, res) => {
     res.redirect('/kas-keluar');
   });
 });
-
 
 
 //////////////
