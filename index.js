@@ -20,7 +20,7 @@ const conn = mysql.createConnection({
   host: 'sql12.freemysqlhosting.net',
   user: 'sql12619671',
   password: 'FT9Ysirkiu',
-  database: 'db_lingkom2'
+  database: 'sql12619671'
 });
 
 //connect ke database
