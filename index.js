@@ -17,9 +17,9 @@ const app = express();
 
 //konfigurasi koneksi
 const conn = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
+  host: 'sql12.freemysqlhosting.net',
+  user: 'sql12619671',
+  password: 'FT9Ysirkiu',
   database: 'db_lingkom2'
 });
 
