@@ -77,6 +77,10 @@ app.get('/', (req, res) => {
   });
 });
 
+
+////////////////////////////////////////////////////
+//KAS MASUK
+
 app.get('/kas-masuk', (req, res) => {
   // query untuk data no buti terakhir
   let sql = "SELECT tbl_transaksi.*, tbl_akun.nm_akun FROM tbl_transaksi LEFT JOIN tbl_akun ON tbl_transaksi.no_akun = tbl_akun.no_akun WHERE tbl_transaksi.kas_keluar IS NULL OR tbl_transaksi.kas_keluar = '' ORDER BY no_bukti DESC";
@@ -159,7 +163,6 @@ app.post('/addKasmasuk', (req, res) => {
   });
 });
 
-
 app.post('/editKasmasuk', function(req, res) {
   var no_bukti = req.body.no_bukti;
   var tgl = req.body.tgl;
@@ -168,25 +171,22 @@ app.post('/editKasmasuk', function(req, res) {
   var jumlah = req.body.jumlah;
 
   // Lakukan proses update data transaksi di database
-  var sql = "UPDATE tbl_transaksi SET tgl = ?, no_akun = ?, tujuan = ?, jumlah = ? WHERE no_bukti = ?";
-  conn.query(sql, [tgl, no_akun, tujuan, jumlah, no_bukti], function(err, result) {
+  var sql = "UPDATE tbl_transaksi SET tgl = ?, no_akun = ?, tujuan = ?, jumlah = ?, kas_masuk = ? WHERE no_bukti = ?";
+  conn.query(sql, [tgl, no_akun, tujuan, jumlah, jumlah, no_bukti], function(err, result) {
     if (err) throw err;
     console.log("Data transaksi berhasil diubah");
     res.redirect('/kas-masuk');
   });
 });
 
-
-
-
-// Route untuk menghapus data
+// menghapus data kas masuk
 app.post('/deleteKasmasuk', (req, res) => {
-  const idTrans = req.body.id_trans;
-  
-  // Lakukan logika penghapusan data sesuai dengan idTrans yang diterima
-  let sql = "DELETE FROM tbl_transaksi WHERE id_trans=?";
-  let data = [idTrans];
-  
+  const no_bukti = req.body.no_bukti;
+
+  // Lakukan logika penghapusan data sesuai dengan no_bukti yang diterima
+  let sql = "DELETE FROM tbl_transaksi WHERE no_bukti=?";
+  let data = [no_bukti];
+
   let query = conn.query(sql, data, (err, results) => {
     if (err) throw err;
     res.redirect('/kas-masuk');
@@ -194,6 +194,9 @@ app.post('/deleteKasmasuk', (req, res) => {
 });
 
 
+
+///////////////////////////////////////
+//KAS KELUAR
 // menampilkan data table kas keluar
 app.get('/kas-keluar', (req, res) => {
   // query untuk data no bukti terakhir
@@ -223,7 +226,6 @@ app.get('/kas-keluar', (req, res) => {
                   console.error('Error saat mengambil data akun:', err);
                   throw err;
               }
-
               
               res.render('kas-keluar', {
                   results: data,
@@ -278,6 +280,11 @@ app.post('/addKaskeluar', (req, res) => {
   });
 });
 
+
+
+//////////////
+//DAFTAR AKUN
+
 // Menampilkan halaman 'daftar-akun' dengan data dari tabel tbl_akun
 app.get('/daftar-akun', (req, res) => {
   conn.query('SELECT * FROM tbl_akun', (err, results) => {
@@ -288,16 +295,6 @@ app.get('/daftar-akun', (req, res) => {
   });
 });
 
-
-// app.get('/daftar-akun', (req, res) => {
-//   let sql = "SELECT * FROM tbl_akun";
-//   let query = conn.query(sql, (err, results) => {
-//       if (err) throw err;
-//       res.render('daftar-akun', {
-//           results: results
-//       });
-//   });
-// });
 
 //route untuk insert data
 app.post('/addAkun', (req, res) => {
@@ -330,33 +327,6 @@ app.post('/editAkun', (req, res) => {
   });
 });
 
-
-
-
-// // Menambahkan akun baru ke dalam tabel tbl_akun
-// app.post('/addAkun', (req, res) => {
-//   const { no_akun, nm_akun } = req.body;
-//   const sql = 'INSERT INTO tbl_akun (no_akun, nm_akun) VALUES (?, ?)';
-//   conn.query(sql, [no_akun, nm_akun], (err, result) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.redirect('/daftar-akun');
-//   });
-// });
-
-// // Mengupdate data akun dalam tabel tbl_akun
-// app.post('/editAkun', (req, res) => {
-//   const { id_akun, no_akun, nm_akun } = req.body;
-//   const sql = 'UPDATE tbl_akun SET no_akun = ?, nm_akun = ? WHERE id_akun = ?';
-//   conn.query(sql, [no_akun, nm_akun, id_akun], (err, result) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.redirect('/daftar-akun');
-//   });
-// });
-
 // Menghapus akun dari tabel tbl_akun
 app.post('/deleteAkun', (req, res) => {
   const { id_akun } = req.body;
@@ -368,57 +338,6 @@ app.post('/deleteAkun', (req, res) => {
     res.redirect('/daftar-akun');
   });
 });
-
-
-// // Route untuk insert data
-// app.post('/save', (req, res) => {
-//   let data = {
-//     tgl: req.body.tgl,
-//     no_bukti: generateNoBukti(),
-//     tujuan: req.body.diterima_dari,
-//     no_akun: req.body.untuk_keperluan,
-//     jumlah: req.body.uang_sejumlah,
-//     tipe: 'DEBET', // Set tipe transaksi sebagai DEBET
-//     kas_masuk: req.body.uang_sejumlah,
-//     kas_keluar: 0,
-//     saldo: 0 // Ganti dengan nilai saldo yang sesuai
-//   };
-//   let sql = "INSERT INTO tbl_transaksi SET ?";
-//   let query = conn.query(sql, data, (err, results) => {
-//     if (err) throw err;
-//     res.redirect('/');
-//   });
-// });
-
-// //route untuk update data
-// app.post('/update', (req, res) => {
-//   let sql = "UPDATE tbl_transaksi SET tgl=?, no_bukti=?, tujuan=?, no_akun=?, jumlah=?, tipe=?, kas_masuk=?, kas_keluar=? WHERE id_trans=?";
-//   let data = [
-//     req.body.tgl,
-//     req.body.no_bukti,
-//     req.body.tujuan,
-//     req.body.no_akun,
-//     req.body.jumlah,
-//     req.body.tipe,
-//     req.body.tipe === 'kas_masuk' ? req.body.jumlah : 0,
-//     req.body.tipe === 'kas_keluar' ? req.body.jumlah : 0,
-//     req.body.id_trans
-//   ];
-//   let query = conn.query(sql, data, (err, results) => {
-//     if (err) throw err;
-//     res.redirect('/');
-//   });
-// });
-
-// //route untuk delete data
-// app.post('/delete', (req, res) => {
-//   let sql = "DELETE FROM tbl_transaksi WHERE id_trans=?";
-//   let data = [req.body.id_trans];
-//   let query = conn.query(sql, data, (err, results) => {
-//     if (err) throw err;
-//     res.redirect('/');
-//   });
-// });
 
 //server listening
 app.listen(8055, () => {
