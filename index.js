@@ -396,6 +396,34 @@ app.post('/deleteAkun', (req, res) => {
   });
 });
 
+
+///////////LAPORAN/////////////////////
+
+app.get('/laporan', (req, res) => {
+  // Mengambil filter dari query string
+  const tanggal = req.query.tanggal;
+  const bulan = req.query.bulan;
+  const tahun = req.query.tahun;
+
+  // Membuat query untuk mengambil data transaksi berdasarkan filter
+  let query = 'SELECT * FROM tbl_transaksi';
+  if (tanggal) {
+    query += ` WHERE tgl = '${tanggal}'`;
+  } else if (bulan) {
+    query += ` WHERE MONTH(tgl) = ${bulan}`;
+  } else if (tahun) {
+    query += ` WHERE YEAR(tgl) = ${tahun}`;
+  }
+
+  // Menjalankan query untuk mengambil data transaksi
+  conn.query(query, (error, results) => {
+    if (error) throw error;
+
+    // Kirim data ke halaman 'laporan.hbs'
+    res.render('laporan', { results });
+  });
+});
+
 //server listening
 app.listen(8055, () => {
   console.log('Server is running at port 8055');
