@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web Kas Sederhana by. AFP - Login</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.css">
+  <style>
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <!-- Content -->
+      <br/>
+      <h1 class="text-center">Login</h1>
+      <br/>
+
+      <!-- Form Login -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Web Kas Sederhana by. AFP</h5>
+          <form method="post" action="/login">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            </br>
+                {{#if error}}
+                <p>{{error}}</p>
+                {{/if}}
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  <div class="footer">
+    &copy; 2023 Andri Febriyadi Putra
+  </div>
+
+  <script src="/assets/js/jquery-3.6.4.js"></script>
+  <script src="/assets/js/bootstrap.js"></script>
+</body>
+</html>

@@ -9,6 +9,10 @@ const bodyParser = require('body-parser');
 //use mysql database
 const mysql = require('mysql');
 
+// const bcrypt = require('bcrypt');
+// const session = require('express-session');
+
+
 const app = express();
 
 //konfigurasi koneksi
@@ -30,7 +34,7 @@ app.set('views', path.join(__dirname, 'views'));
 //set view engine
 app.set('view engine', 'hbs');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 //set folder public sebagai static folder untuk static file
 app.use('/assets', express.static(path.join(__dirname, 'public')));
 
@@ -53,8 +57,85 @@ hbs.registerHelper('formatRupiah', function(saldo) {
   return rupiah;
 });
 
+
+/////////////////////
+//LOGIN & LOGOUT////
+////////////////////
+
+// app.use(session({
+//   secret: 'secret',
+//   resave: false,
+//   saveUninitialized: false,
+// }));
+
+// // Middleware untuk memeriksa autentikasi pengguna
+// function requireLogin(req, res, next) {
+//   if (req.session.user) {
+//     // Pengguna sudah diautentikasi, lanjutkan ke rute berikutnya
+//     next();
+//   } else {
+//     // Pengguna belum diautentikasi, redirect ke halaman login
+//     res.redirect('/login');
+//   }
+// }
+
+// // Rute root untuk halaman login
+// app.get('/', (req, res) => {
+//   res.render('login');
+// });
+
+// // Rute untuk halaman login
+// app.get('/login', (req, res) => {
+//   res.render('login');
+// });
+
+// // Rute untuk proses login
+// app.post('/login', (req, res) => {
+//   const { username, password } = req.body;
+
+//   // Cari pengguna berdasarkan username
+//   conn.query('SELECT * FROM tbl_user WHERE username = ?', [username], (err, results) => {
+//       if (err) {
+//           console.error('Terjadi kesalahan saat mencari pengguna:', err);
+//           res.render('login', { error: 'Terjadi kesalahan. Silakan coba lagi.' });
+//       } else {
+//           // Periksa apakah pengguna ditemukan
+//           if (results.length > 0) {
+//               const user = results[0];
+
+//               // Periksa kecocokan password
+//               bcrypt.compare(password, user.password, (err, isMatch) => {
+//                   if (err) {
+//                       console.error('Terjadi kesalahan saat memeriksa password:', err);
+//                       res.render('login', { error: 'Terjadi kesalahan. Silakan coba lagi.' });
+//                   } else if (isMatch) {
+//                       // Set session untuk pengguna yang berhasil login
+//                       req.session.user = user;
+
+//                       res.redirect('/dashboard');
+//                   } else {
+//                       res.render('login', { error: 'Password salah. Silakan coba lagi.' });
+//                   }
+//               });
+//           } else {
+//               res.render('login', { error: 'Pengguna tidak ditemukan.' });
+//           }
+//       }
+//   });
+// });
+
+
+// // Rute untuk logout
+// app.get('/logout', (req, res) => {
+//   // Hapus session pengguna
+//   req.session.destroy();
+//   res.redirect('/login');
+// });
+
+
+
 // Route untuk homepage
-app.get('/', (req, res) => {
+app.get('/',(req, res) => {
   let sql = "SELECT * FROM tbl_transaksi";
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
@@ -69,14 +150,16 @@ app.get('/', (req, res) => {
       saldoKeluar += results[i].kas_keluar;
     }
 
+    // const user = req.session.user;
+
     res.render('dashboard', {
       saldoMasuk: saldoMasuk,
       saldoKeluar: saldoKeluar,
-      totalSaldo: totalSaldo
+      totalSaldo: totalSaldo,
+      // user
     });
   });
 });
-
 
 ////////////////////////////////////////////////////
 //KAS MASUK
