@@ -280,6 +280,36 @@ app.post('/addKaskeluar', (req, res) => {
   });
 });
 
+app.post('/editKaskeluar', function(req, res) {
+  var no_bukti = req.body.no_bukti;
+  var tgl = req.body.tgl;
+  var no_akun = req.body.no_akun;
+  var tujuan = req.body.tujuan;
+  var jumlah = req.body.jumlah;
+
+  // Lakukan proses update data transaksi di database
+  var sql = "UPDATE tbl_transaksi SET tgl = ?, no_akun = ?, tujuan = ?, jumlah = ?, kas_masuk = ? WHERE no_bukti = ?";
+  conn.query(sql, [tgl, no_akun, tujuan, jumlah, jumlah, no_bukti], function(err, result) {
+    if (err) throw err;
+    console.log("Data transaksi berhasil diubah");
+    res.redirect('/kas-keluar');
+  });
+});
+
+// menghapus data kas masuk
+app.post('/deleteKaskeluar', (req, res) => {
+  const no_bukti = req.body.no_bukti;
+
+  // Lakukan logika penghapusan data sesuai dengan no_bukti yang diterima
+  let sql = "DELETE FROM tbl_transaksi WHERE no_bukti=?";
+  let data = [no_bukti];
+
+  let query = conn.query(sql, data, (err, results) => {
+    if (err) throw err;
+    res.redirect('/kas-keluar');
+  });
+});
+
 
 
 //////////////
