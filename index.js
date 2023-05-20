@@ -508,6 +508,6 @@ app.get('/laporan', (req, res) => {
 });
 
 //server listening
-app.listen(8055, () => {
+app.listen(8065, () => {
   console.log('Server is running at port 8055');
 });
