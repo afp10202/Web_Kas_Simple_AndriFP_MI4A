@@ -29,45 +29,45 @@
       <h1>Daftar Akun</h1>
       <br/>
 
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-        Tambah Akun
-      </button>
+     <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+            Tambah Akun
+          </button>
 
-      <br/><br/>
+          <br/><br/>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">No Akun</th>
-            <th scope="col">Nama Akun</th>
-            <th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each akun}}
-          <tr>
-            <th scope="row">{{@index}}</th>
-            <td>{{no_akun}}</td>
-            <td>{{nm_akun}}</td>
-            <td>
-              <!-- Button trigger edit modal -->
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{id_akun}}">
-                Edit
-              </button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">No Akun</th>
+                <th scope="col">Nama Akun</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each akun}}
+              <tr>
+                <th scope="row">{{@index}}</th>
+                <td>{{no_akun}}</td>
+                <td>{{nm_akun}}</td>
+                <td>
+                  <!-- Button trigger edit modal -->
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{id_akun}}">
+                    Edit
+                  </button>
 
-              <!-- Button trigger delete modal -->
-              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{id_akun}}">
-                Hapus
-              </button>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  </div>
+                  <!-- Button trigger delete modal -->
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{id_akun}}">
+                    Hapus
+                  </button>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+              </div>
+            </div>
 
   <!-- Add Modal -->
   <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">

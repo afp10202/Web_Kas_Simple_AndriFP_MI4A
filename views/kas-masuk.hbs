@@ -186,26 +186,25 @@
 
   <script src="/assets/js/jquery-3.6.4.js"></script>
   <script src="/assets/js/bootstrap.js"></script>
- <script>
+<script>
   $(document).ready(function() {
     // Fungsi untuk menampilkan modal edit transaksi dengan data yang ingin diubah
     // Mengisi nilai pada modal edit saat tombol Edit ditekan
-      $('#editakun').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var no_bukti = button.data('no_bukti');
-        var tgl = button.data('tgl');
-        var no_akun = button.data('no_akun');
-        var tujuan = button.data('tujuan');
-        var jumlah = button.data('jumlah');
-        
-        var modal = $(this);
-        modal.find('#edit-no_bukti').val(no_bukti);
-        modal.find('#edit-tgl').val(tgl);
-        modal.find('#edit-no_akun').val(no_akun);
-        modal.find('#edit-tujuan').val(tujuan);
-        modal.find('#edit-jumlah').val(jumlah);
-      });
+    $('#editakun').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      var no_bukti = button.data('no_bukti');
+      var tgl = button.data('tgl');
+      var no_akun = button.data('no_akun');
+      var tujuan = button.data('tujuan');
+      var jumlah = button.data('jumlah');
 
+      var modal = $(this);
+      modal.find('#edit_no_bukti').val(no_bukti);
+      modal.find('#edit_tgl').val(tgl);
+      modal.find('#edit_no_akun').val(no_akun);
+      modal.find('#edit_tujuan').val(tujuan);
+      modal.find('#edit_jumlah').val(jumlah);
+    });
   });
 </script>
 

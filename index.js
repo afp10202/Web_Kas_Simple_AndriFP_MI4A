@@ -168,9 +168,8 @@ app.post('/editKasmasuk', function(req, res) {
   var jumlah = req.body.jumlah;
 
   // Lakukan proses update data transaksi di database
-  // Misalnya, menggunakan MySQL:
   var sql = "UPDATE tbl_transaksi SET tgl = ?, no_akun = ?, tujuan = ?, jumlah = ? WHERE no_bukti = ?";
-  connection.query(sql, [tgl, no_akun, tujuan, jumlah, no_bukti], function(err, result) {
+  conn.query(sql, [tgl, no_akun, tujuan, jumlah, no_bukti], function(err, result) {
     if (err) throw err;
     console.log("Data transaksi berhasil diubah");
     res.redirect('/kas-masuk');
